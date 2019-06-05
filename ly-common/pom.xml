@@ -32,6 +32,11 @@
             <version>2.5.4</version>
         </dependency>
 
+        <!-- springMvc -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
 
     </dependencies>
 
