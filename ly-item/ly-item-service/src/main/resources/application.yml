@@ -4,9 +4,9 @@ spring:
   application:
     name: item-service
   datasource:
-    url: jdbc:mysql://47.100.238.247:3306/yun6
-    username: hxp
-    password: Jb123456
+    url: jdbc:mysql://127.0.0.1:3306/yun6
+    username: root
+    password: root
 eureka:
   client:
     service-url:
