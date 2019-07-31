@@ -14,3 +14,18 @@ eureka:
   instance:
     ip-address: 127.0.0.1
     prefer-ip-address: true
+fdfs:
+  so-timeout: 2500
+  connect-timeout: 600
+  thumb-image: # 缩略图
+    width: 60
+    height: 60
+  tracker-list: # tracker地址
+    - 192.168.2.157:22122
+ly:
+  upload:
+    baseUrl: http://image.leyou.com/
+    allowTypes:
+      - image/jpeg
+      - image/png
+      - image/bmp

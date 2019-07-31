@@ -30,6 +30,12 @@
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
 
+        <!--https://github.com/tobato/FastDFS_Client-->
+        <dependency>
+            <groupId>com.github.tobato</groupId>
+            <artifactId>fastdfs-client</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.leyou.common</groupId>
             <artifactId>ly-common</artifactId>
