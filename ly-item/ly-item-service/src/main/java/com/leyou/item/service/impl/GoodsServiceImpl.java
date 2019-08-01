@@ -19,10 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -138,5 +135,44 @@ public class GoodsServiceImpl implements GoodsService {
         if (count != stockList.size()) {
             throw new LyException(ExceptionEnum.GOODS_SAVE_ERROR);
         }
+    }
+
+    @Override
+    public SpuDetail queryDetailById(Long spuId) {
+        SpuDetail detail = detailDao.selectByPrimaryKey(spuId);
+        if (detail == null) {
+            throw new LyException(ExceptionEnum.GOODS_DETAIL_NOT_FOND);
+        }
+        return detail;
+    }
+
+    @Override
+    public List<Sku> querySkuBySpuId(Long spuId) {
+        Sku sku = new Sku();
+        sku.setSpuId(spuId);
+        List<Sku> skuList = skuDao.select(sku);
+        if (CollectionUtils.isEmpty(skuList)) {
+            throw new LyException(ExceptionEnum.GOODS_SKU_NOT_FOND);
+        }
+
+        // 查询库存
+        /*for (Sku s : skuList) {
+            Stock stock = stockDao.selectByPrimaryKey(s.getId());
+            if (stock == null) {
+                throw new LyException(ExceptionEnum.GOODS_STOCK_NOT_FOND);
+            }
+            s.setStock(stock.getStock());
+        }*/
+
+        // 查询库存
+        List<Long> ids = skuList.stream().map(Sku::getId).collect(Collectors.toList());
+        List<Stock> stockList = stockDao.selectByIdList(ids);
+        if (CollectionUtils.isEmpty(stockList)) {
+            throw new LyException(ExceptionEnum.GOODS_STOCK_NOT_FOND);
+        }
+        // 我们把stock变成一个map，其key是:sku的id，值是库存值
+        Map<Long, Integer> stockMap = stockList.stream().collect(Collectors.toMap(Stock::getSkuId, Stock::getStock));
+        skuList.forEach(s -> s.setStock(stockMap.get(s.getId())));
+        return skuList;
     }
 }
