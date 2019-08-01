@@ -35,9 +35,11 @@ public class SpecificationServiceImpl implements SpecificationService {
     }
 
     @Override
-    public List<SpecParam> queryParamByGid(Long gid) {
+    public List<SpecParam> queryParamList(Long gid, Long cid, Boolean searching) {
         SpecParam param = new SpecParam();
         param.setGroupId(gid);
+        param.setCid(cid);
+        param.setSearching(searching);
         List<SpecParam> list = paramDao.select(param);
         if (CollectionUtils.isEmpty(list)) {
             // 没查到

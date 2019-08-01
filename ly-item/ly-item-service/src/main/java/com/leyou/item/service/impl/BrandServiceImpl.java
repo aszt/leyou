@@ -1,6 +1,5 @@
 package com.leyou.item.service.impl;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.leyou.common.enums.ExceptionEnum;
@@ -67,5 +66,23 @@ public class BrandServiceImpl implements BrandService {
                 throw new LyException(ExceptionEnum.BRAND_SAVE_ERROR);
             }
         }
+    }
+
+    @Override
+    public Brand queryById(Long id) {
+        Brand brand = brandDao.selectByPrimaryKey(id);
+        if (brand == null) {
+            throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
+        }
+        return brand;
+    }
+
+    @Override
+    public List<Brand> queryBrandByCid(Long cid) {
+        List<Brand> list = brandDao.queryBrandByCid(cid);
+        if (CollectionUtils.isEmpty(list)) {
+            throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
+        }
+        return list;
     }
 }

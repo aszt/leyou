@@ -29,4 +29,13 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return list;
     }
+
+    @Override
+    public List<Category> queryByIds(List<Long> ids) {
+        List<Category> list = categoryDao.selectByIdList(ids);
+        if (CollectionUtils.isEmpty(list)) {
+            throw new LyException(ExceptionEnum.CATEGORY_NOT_FOND);
+        }
+        return list;
+    }
 }
