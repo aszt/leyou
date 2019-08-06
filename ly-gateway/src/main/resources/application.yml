@@ -7,10 +7,12 @@ eureka:
   client:
     service-url:
       defaultZone: http://127.0.0.1:10086/eureka
+    registry-fetch-interval-seconds: 5
 zuul:
   prefix: /api
   routes:
     item-service: /item/**
+    search-service: /search/**
     upload-service:
       path: /upload/**
       serviceId: upload-service
