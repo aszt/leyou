@@ -24,5 +24,8 @@ public class CategoryClientTest {
     public void queryCategoryByIds() {
         List<Category> categories = categoryClient.queryCategoryByIds(Arrays.asList(1L, 2L, 3L));
         Assert.assertEquals(3, categories.size());
+        for (Category category : categories) {
+            System.out.println(category);
+        }
     }
 }

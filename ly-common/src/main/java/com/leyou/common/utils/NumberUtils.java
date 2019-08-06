@@ -21,18 +21,30 @@ public class NumberUtils {
 
     /**
      * 判断字符串是否是数值格式
+     *
      * @param str
      * @return
      */
-    public static boolean isDigit(String str){
-        if(str == null || str.trim().equals("")){
+    public static boolean isDigit(String str) {
+        if (str == null || str.trim().equals("")) {
             return false;
         }
-        return str.matches("^\\d+$");
+        return str.matches("^\\d+\\.?\\d+$");
+    }
+
+    public static double toDouble(String s) {
+        if (s == null) {
+            return 0;
+        }
+        if (!isDigit(s)) {
+            return 0;
+        }
+        return Double.valueOf(s);
     }
 
     /**
      * 将一个小数精确到指定位数
+     *
      * @param num
      * @param scale
      * @return
@@ -43,11 +55,11 @@ public class NumberUtils {
     }
 
     // 从字符串中根据正则表达式寻找，返回找到的数字数组
-    public static Double[] searchNumber(String value, String regex){
+    public static Double[] searchNumber(String value, String regex) {
         List<Double> doubles = new ArrayList<>();
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(value);
-        if(matcher.find()) {
+        if (matcher.find()) {
             MatchResult result = matcher.toMatchResult();
             for (int i = 1; i <= result.groupCount(); i++) {
                 doubles.add(Double.valueOf(result.group(i)));
@@ -58,13 +70,14 @@ public class NumberUtils {
 
     /**
      * 生成指定位数的随机数字
+     *
      * @param len
      * @return
      */
-    public static String generateCode(int len){
+    public static String generateCode(int len) {
         len = Math.min(len, 8);
         int min = Double.valueOf(Math.pow(10, len - 1)).intValue();
         int num = new Random().nextInt(Double.valueOf(Math.pow(10, len + 1)).intValue() - 1) + min;
-        return String.valueOf(num).substring(0,len);
+        return String.valueOf(num).substring(0, len);
     }
 }

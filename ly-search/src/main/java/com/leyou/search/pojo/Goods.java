@@ -9,6 +9,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Data
 @Document(indexName = "goods", type = "docs", shards = 1, replicas = 0)
@@ -41,7 +42,7 @@ public class Goods {
     private Date createTime;
 
     // 价格
-    private List<Long> price;
+    private Set<Long> price;
 
     // sku信息的json结构
     @Field(type = FieldType.Keyword, index = false)
