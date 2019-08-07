@@ -85,4 +85,13 @@ public class BrandServiceImpl implements BrandService {
         }
         return list;
     }
+
+    @Override
+    public List<Brand> queryBrandByIds(List<Long> ids) {
+        List<Brand> brands = brandDao.selectByIdList(ids);
+        if (CollectionUtils.isEmpty(brands)) {
+            throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
+        }
+        return brands;
+    }
 }
