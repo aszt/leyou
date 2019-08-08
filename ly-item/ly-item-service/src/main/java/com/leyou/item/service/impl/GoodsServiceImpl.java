@@ -222,4 +222,20 @@ public class GoodsServiceImpl implements GoodsService {
         // 新增sku和stock
         saveSkuAndStock(spu);
     }
+
+    @Override
+    public Spu querySpuById(Long id) {
+        // 查询spu
+        Spu spu = spuDao.selectByPrimaryKey(id);
+        if (spu == null) {
+            throw new LyException(ExceptionEnum.GOODS_NOT_FOND);
+        }
+        // 查询sku
+        spu.setSkus(querySkuBySpuId(id));
+
+        // 查询detail
+        spu.setSpuDetail(queryDetailById(id));
+
+        return spu;
+    }
 }
