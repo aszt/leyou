@@ -8,4 +8,6 @@ public interface CategoryService {
     List<Category> queryCategoryListByPid(Long pid);
 
     List<Category> queryByIds(List<Long> ids);
+
+    List<Category> queryAllByCid3(Long id);
 }
