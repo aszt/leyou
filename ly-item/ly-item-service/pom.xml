@@ -43,6 +43,12 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
+        <!-- RabbitMQ消息队列 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.leyou.service</groupId>
             <artifactId>ly-item-interface</artifactId>

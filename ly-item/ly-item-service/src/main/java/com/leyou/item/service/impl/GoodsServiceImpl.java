@@ -14,6 +14,7 @@ import com.leyou.item.service.BrandService;
 import com.leyou.item.service.CategoryService;
 import com.leyou.item.service.GoodsService;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +44,9 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Autowired
     private BrandService brandService;
+
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
     @Override
     public PageResult<Spu> querySpuByPage(Integer page, Integer rows, Boolean saleable, String key) {
@@ -91,6 +95,7 @@ public class GoodsServiceImpl implements GoodsService {
         }
     }
 
+    @Transactional
     @Override
     public void saveGoods(Spu spu) {
         // 新增spu（总）
@@ -114,6 +119,9 @@ public class GoodsServiceImpl implements GoodsService {
 
         // 新增sku和库存
         saveSkuAndStock(spu);
+
+        // 发送mq消息
+        amqpTemplate.convertAndSend("item.insert", spu.getId());
     }
 
     private void saveSkuAndStock(Spu spu) {
@@ -221,6 +229,9 @@ public class GoodsServiceImpl implements GoodsService {
 
         // 新增sku和stock
         saveSkuAndStock(spu);
+
+        // 发送mq消息
+        amqpTemplate.convertAndSend("item.update", spu.getId());
     }
 
     @Override

@@ -6,4 +6,6 @@ public interface PageService {
     Map<String, Object> loadModel(Long spuId);
 
     void createHtml(Long spuId);
+
+    void deleteHtml(Long spuId);
 }

@@ -69,6 +69,11 @@ public class PageServiceImpl implements PageService {
         context.setVariables(loadModel(spuId));
         // 输出流
         File dest = new File("D://heima/upload", spuId + ".html");
+
+        if (dest.exists()) {
+            dest.delete();
+        }
+
         try (PrintWriter writer = new PrintWriter(dest, "UTF-8")) {
             // 生成HTML
             templateEngine.process("item", context, writer);
@@ -76,5 +81,13 @@ public class PageServiceImpl implements PageService {
             log.error("[静态页服务] 生成静态页异常！", e);
         }
 
+    }
+
+    @Override
+    public void deleteHtml(Long spuId) {
+        File dest = new File("D://heima/upload", spuId + ".html");
+        if (dest.exists()) {
+            dest.delete();
+        }
     }
 }
