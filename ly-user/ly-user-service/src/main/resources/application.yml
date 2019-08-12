@@ -8,6 +8,13 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
+  rabbitmq:
+      host: 192.168.2.157
+      username: leyou
+      password: leyou
+      virtual-host: /leyou
+  redis:
+    host: 192.168.2.157
 eureka:
   client:
     service-url:
