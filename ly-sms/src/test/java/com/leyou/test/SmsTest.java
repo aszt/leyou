@@ -20,7 +20,7 @@ public class SmsTest {
     @Test
     public void testSend() throws InterruptedException {
         Map<String, String> msg = new HashMap<>();
-        msg.put("phone", "XXX");
+        msg.put("phone", "17621951556");
         msg.put("code", "8888");
         amqpTemplate.convertAndSend("ly.sms.exchange", "sms.verify.code", msg);
 
