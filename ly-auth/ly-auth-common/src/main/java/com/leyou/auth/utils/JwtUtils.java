@@ -9,7 +9,6 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 
 public class JwtUtils {
-
     /**
      * 生成Token
      *
@@ -18,7 +17,7 @@ public class JwtUtils {
      * @param expireMinutes
      * @return
      */
-    public static String generateToken(UserInfo userInfo, PrivateKey privateKey, int expireMinutes) {
+    public static String generateToken(UserInfo userInfo, PrivateKey privateKey, int expireMinutes) throws Exception {
         return Jwts.builder()
                 .claim(JwtConstants.JWT_KEY_ID, userInfo.getId())
                 .claim(JwtConstants.JWT_KEY_USER_NAME, userInfo.getName())
@@ -52,7 +51,7 @@ public class JwtUtils {
      * @param token
      * @return
      */
-    public static Jws<Claims> parseToken(PublicKey publicKey, String token) {
+    public static Jws<Claims> parseToken(PublicKey publicKey, String token) throws Exception {
         return Jwts.parser().setSigningKey(publicKey).parseClaimsJws(token);
     }
 
@@ -77,7 +76,7 @@ public class JwtUtils {
      * @param token
      * @return
      */
-    public static UserInfo getUserInfo(PublicKey publicKey, String token) {
+    public static UserInfo getUserInfo(PublicKey publicKey, String token) throws Exception {
         Jws<Claims> claimsJws = parseToken(publicKey, token);
         Claims body = claimsJws.getBody();
         return new UserInfo(
@@ -102,5 +101,4 @@ public class JwtUtils {
                 ObjectUtils.toString(body.get(JwtConstants.JWT_KEY_USER_NAME))
         );
     }
-
 }

@@ -30,7 +30,7 @@ public class JwtUtilsTest {
     }
 
     @Test
-    public void generateToken() {
+    public void generateToken() throws Exception {
         //生成Token
         String s = JwtUtils.generateToken(new UserInfo(20L, "Jack"), privateKey, 5);
         System.out.println("s = " + s);
@@ -40,7 +40,7 @@ public class JwtUtilsTest {
      * 解析token
      */
     @Test
-    public void parseToken() {
+    public void parseToken() throws Exception {
         //String token = "eyJhbGciOiJSUzI1NiJ9.eyJpZCI6MjAsInVzZXJuYW1lIjoiSmFjayIsImV4cCI6MTUzODM2OTM3N30.Vi7UJrwMu0BOHMQoSSLefzGU1ir5LG-drcvAHPjMMMBzQz1oASjoDsiuw3h0bqVUUWXjdNcpybCWVuZ8UvOXOr-Jecqjz3NF_ZDfgessRGsijIIbju0qak6Zfm09jsjnHFTZ2munFJdM0I0RsiafQtkJSiLji7QXlvjCquKJUkg";
         String token = "eyJhbGciOiJSUzI1NiJ9.eyJpZCI6MjAsInVzZXJuYW1lIjoiSmFjayIsImV4cCI6MTU1OTA0ODYxNX0.TLlmBbvcZSqdC4O3mOWkWUJZfwf6T5Oq0y-A8dJuq4iI8w10Fa38DLH53rmhJnqQWn19ytsEtSb6EbyYV1d6e6XFRZl0sNgWsWIOOAI4QpgdSS04IiPqFbBjhI8ncqIC2GXrb5v3LVNKVaf7H5jyZOSOz6elji9bDNuP8lMb_OA";
         UserInfo userInfo = JwtUtils.getUserInfo(publicKey, token);
