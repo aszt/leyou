@@ -24,7 +24,21 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-netflix-zuul</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+
+        <!-- zuul版本bug解决（host永远写不进去） -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-netflix-zuul</artifactId>
+            <version>2.0.0.RELEASE</version>
+        </dependency>
+
     </dependencies>
 
 </project>
