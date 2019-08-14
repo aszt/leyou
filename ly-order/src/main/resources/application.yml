@@ -24,3 +24,6 @@ ly:
   jwt:
     pubKeyPath: D://rsa/id_rsa.pub
     cookieName: LY_TOKEN
+  worker:
+    workerId: 1
+    dataCenterId: 1
