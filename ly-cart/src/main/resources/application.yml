@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: cart-service
+  redis:
+    host: 192.168.2.157
 eureka:
   client:
     service-url:
