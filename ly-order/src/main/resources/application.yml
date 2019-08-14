@@ -1,0 +1,26 @@
+server:
+  port: 8089
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/yun6
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+  jackson:
+    default-property-inclusion: non_null
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka
+    registry-fetch-interval-seconds: 5
+  instance:
+    ip-address: 127.0.0.1
+    prefer-ip-address: true
+mybatis:
+  type-aliases-package: com.leyou.order.pojo
+ly:
+  jwt:
+    pubKeyPath: D://rsa/id_rsa.pub
+    cookieName: LY_TOKEN
