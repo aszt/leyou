@@ -69,6 +69,13 @@
             <version>0.0.3</version>
         </dependency>
 
+        <!-- 处理XML请求的依赖（微信支付响应接口） -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+            <version>2.9.6</version>
+        </dependency>
+
     </dependencies>
 
 </project>
