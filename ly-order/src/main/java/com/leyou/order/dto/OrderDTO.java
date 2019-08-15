@@ -1,5 +1,6 @@
 package com.leyou.order.dto;
 
+import com.leyou.common.dto.CartDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

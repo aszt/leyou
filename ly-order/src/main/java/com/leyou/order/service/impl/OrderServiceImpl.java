@@ -1,6 +1,7 @@
 package com.leyou.order.service.impl;
 
 import com.leyou.auth.pojo.UserInfo;
+import com.leyou.common.dto.CartDTO;
 import com.leyou.common.enums.ExceptionEnum;
 import com.leyou.common.exception.LyException;
 import com.leyou.common.utils.IdWorker;
@@ -8,8 +9,8 @@ import com.leyou.item.pojo.Sku;
 import com.leyou.order.client.AddressClient;
 import com.leyou.order.client.GoodsClient;
 import com.leyou.order.dto.AddressDTO;
-import com.leyou.order.dto.CartDTO;
 import com.leyou.order.dto.OrderDTO;
+import com.leyou.order.enums.OrderStatusEnum;
 import com.leyou.order.interceptor.UserInterceptor;
 import com.leyou.order.mapper.OrderDetailMapper;
 import com.leyou.order.mapper.OrderMapper;
@@ -22,6 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderDetailMapper detailDao;
 
     @Autowired
-    private OrderStatusMapper orderStatusDao;
+    private OrderStatusMapper statusDao;
 
     @Autowired
     private IdWorker idWorker;
@@ -45,6 +48,7 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private GoodsClient goodsClient;
 
+    @Transactional
     @Override
     public Long createOrder(OrderDTO orderDTO) {
         // 1 新增订单
@@ -108,18 +112,51 @@ public class OrderServiceImpl implements OrderService {
         // 2 新增订单详情
         count = detailDao.insertList(details);
         if (count != details.size()) {
-            log.error("[创建订单详情] 创建订单失败，orderId:{}" + orderId);
+            log.error("[创建订单详情] 创建订单详情失败，orderId:{}" + orderId);
             throw new LyException(ExceptionEnum.CREATE_ORDER_ERROR);
         }
 
         // 3 新增订单状态
         OrderStatus orderStatus = new OrderStatus();
         orderStatus.setOrderId(orderId);
-//        orderStatus.setStatus(OrderStatusEnum.INIT.value());
-        orderStatus.setCreateTime(new Date());
-        orderStatusDao.insertSelective(orderStatus);
+        orderStatus.setStatus(OrderStatusEnum.UN_PAY.value());
+        orderStatus.setCreateTime(order.getCreateTime());
+        count = statusDao.insertSelective(orderStatus);
+        if (count != 1) {
+            log.error("[创建订单状态] 创建订单状态失败，orderId:{}" + orderId);
+            throw new LyException(ExceptionEnum.CREATE_ORDER_ERROR);
+        }
 
         // 4 减库存
-        return null;
+        List<CartDTO> carts = orderDTO.getCarts();
+        goodsClient.decreaseStock(carts);
+        return orderId;
+    }
+
+    @Override
+    public Order queryOrderById(Long id) {
+        // 查询订单
+        Order order = orderDao.selectByPrimaryKey(id);
+        if (order == null) {
+            // 不存在
+            throw new LyException(ExceptionEnum.ORDER_NOT_FOUND);
+        }
+
+        // 查询订单详情
+        OrderDetail orderDetail = new OrderDetail();
+        orderDetail.setOrderId(id);
+        List<OrderDetail> details = detailDao.select(orderDetail);
+        if (CollectionUtils.isEmpty(details)) {
+            throw new LyException(ExceptionEnum.ORDER_DETAIL_NOT_FOUND);
+        }
+        order.setOrderDetails(details);
+
+        // 查询订单状态
+        OrderStatus orderStatus = statusDao.selectByPrimaryKey(id);
+        if (orderStatus == null) {
+            throw new LyException(ExceptionEnum.ORDER_STATUS_NOT_FOUND);
+        }
+        order.setOrderStatus(orderStatus);
+        return order;
     }
 }
